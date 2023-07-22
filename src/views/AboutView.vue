@@ -1,15 +1,7 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <p>Cosmic is a new social network built on IPFS. No cryptocurrency or blockchains, just IPFS.</p>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+
