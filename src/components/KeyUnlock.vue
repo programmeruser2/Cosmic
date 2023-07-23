@@ -1,6 +1,8 @@
 <script setup>
   import { ref, inject } from 'vue';
   const helia = inject('helia');
+  const j = inject('heliaJSON');
+  const name = inject('heliaIPNS');
 
   const emit = defineEmits(['unlock']);
   const existingKey = !!localStorage.getItem('ipns_key');
@@ -12,13 +14,27 @@
   const password = ref('');
 
   async function makeKey() {
+    if ((await helia.libp2p.keychain.listKeys()).map(x => x.name).indexOf('cosmos-key') != -1) {
+      await helia.libp2p.keychain.removeKey('cosmos-key');
+    }
     try {
       //console.log(keyType);
-      await helia.libp2p.keychain.createKey('cosmos-key', keyType.value, keyBits.value);
+      const keyInfo = await helia.libp2p.keychain.createKey('cosmos-key', keyType.value, keyBits.value);
+      // Setup our identity
+      // No posts at the start
+      //const j = inject('heliaJSON');
+      const cid = j.add({ posts: [] });
+      //const name = inject('heliaIPNS');
+      const peerId = await helia.libp2p.keychain.exportPeerId(keyInfo.name);
+      await name.publish(peerId, cid);
       localStorage.setItem('ipns_key', await helia.libp2p.keychain.exportKey('cosmos-key', password.value));
+
       emit('unlock');
     } catch (err) {
       error.value = err.toString();
+      if (err.toString().indexOf('PublishError.InsufficientPeers') != -1) {
+        error.value += '. Try waiting until you have connected to more peers';
+      }
     }
   }
   async function unlockKey() {
@@ -41,8 +57,8 @@
     <label for="keypair-type">Keypair type:</label>
     <select v-model="keyType" id="keypair-type">
       <option value="RSA">RSA</option>
-      <option value="Ed25519">Ed25519</option>
-      <option value="secp256k1">Secp256k1</option>
+      <!--<option value="Ed25519">Ed25519</option>
+      <option value="secp256k1">Secp256k1</option> -->
     </select> 
     <br/>
     <label for="keypair-bits">Keypair bits:</label>
