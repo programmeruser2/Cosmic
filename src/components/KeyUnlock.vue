@@ -31,6 +31,7 @@
       emit('unlock');
     } catch (err) {
       error.value = err.toString();
+      console.warn(error.value);
       if (err.toString().indexOf('PublishError.InsufficientPeers') != -1) {
         error.value += '. Try waiting until you have connected to more peers';
       }

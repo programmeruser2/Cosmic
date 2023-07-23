@@ -6,7 +6,7 @@ import { createPinia } from 'pinia'
 import { createHelia } from 'helia';
 import { json } from '@helia/json';
 import { ipns } from '@helia/ipns';
-import { dht, pubsub } from '@helia/ipns/routing';
+import { dht } from '@helia/ipns/routing';
 
 import App from './App.vue'
 import router from './router'
@@ -20,7 +20,7 @@ app.use(router)
 const helia = await createHelia();
 app.provide('helia', helia);
 app.provide('heliaJSON', json(helia));
-app.provide('heliaIPNS', ipns(helia, [dht(helia), pubsub(helia)]));
+app.provide('heliaIPNS', ipns(helia, [dht(helia)]));
 document.querySelector('#ipfs-loading').remove();
 
 app.mount('#app')
