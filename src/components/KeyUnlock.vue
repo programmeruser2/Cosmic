@@ -14,12 +14,12 @@
   const password = ref('');
 
   async function makeKey() {
-    if ((await helia.libp2p.keychain.listKeys()).map(x => x.name).indexOf('cosmos-key') != -1) {
-      await helia.libp2p.keychain.removeKey('cosmos-key');
+    if ((await helia.libp2p.keychain.listKeys()).map(x => x.name).indexOf('cosmic-key') != -1) {
+      await helia.libp2p.keychain.removeKey('cosmic-key');
     }
     try {
       //console.log(keyType);
-      const keyInfo = await helia.libp2p.keychain.createKey('cosmos-key', keyType.value, keyBits.value);
+      const keyInfo = await helia.libp2p.keychain.createKey('cosmic-key', keyType.value, keyBits.value);
       // Setup our identity
       // No posts at the start
       //const j = inject('heliaJSON');
@@ -27,7 +27,7 @@
       //const name = inject('heliaIPNS');
       const peerId = await helia.libp2p.keychain.exportPeerId(keyInfo.name);
       await name.publish(peerId, cid);
-      localStorage.setItem('ipns_key', await helia.libp2p.keychain.exportKey('cosmos-key', password.value));
+      localStorage.setItem('ipns_key', await helia.libp2p.keychain.exportKey('cosmic-key', password.value));
       emit('unlock');
     } catch (err) {
       error.value = err.toString();
@@ -38,7 +38,7 @@
   }
   async function unlockKey() {
     try {
-      await helia.libp2p.keychain.importKey('cosmos-key', localStorage.getItem('ipns_key'), password.value);
+      await helia.libp2p.keychain.importKey('cosmic-key', localStorage.getItem('ipns_key'), password.value);
       emit('unlock');
     } catch (err) {
       error.value = `${err.toString()}. Either your password is wrong, the key is corrupted, or something else went wrong.`;
@@ -47,12 +47,12 @@
 </script>
 <template>
   <div v-if="existingKey">
-    <h1>Unlock your existing Cosmos keypair</h1>
+    <h1>Unlock your existing Cosmic keypair</h1>
     <input v-model="password" type="password" placeholder="Password"/>
     <button @click="unlockKey">Unlock the keypair</button>
   </div>
   <div v-if="!existingKey">
-    <h1>Create a new keypair for Cosmos</h1>
+    <h1>Create a new keypair for Cosmic</h1>
     <label for="keypair-type">Keypair type:</label>
     <select v-model="keyType" id="keypair-type">
       <option value="RSA">RSA</option>
