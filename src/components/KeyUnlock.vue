@@ -28,7 +28,6 @@
       const peerId = await helia.libp2p.keychain.exportPeerId(keyInfo.name);
       await name.publish(peerId, cid);
       localStorage.setItem('ipns_key', await helia.libp2p.keychain.exportKey('cosmos-key', password.value));
-
       emit('unlock');
     } catch (err) {
       error.value = err.toString();
