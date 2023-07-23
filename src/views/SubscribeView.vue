@@ -35,8 +35,8 @@
   <input v-model="subUser" type="text" placeholder="User"/>
   <button @click="handleSubUser">Subscribe</button>
   
-  <h2>Subscribe to a new group</h2>
+  <!--<h2>Subscribe to a new group</h2>
   <input v-model="subGroup" type="text" placeholder="Group"/>
-  <button @click="handleSubGroup">Subscribe</button>
+  <button @click="handleSubGroup">Subscribe</button>-->
 
 </template>
