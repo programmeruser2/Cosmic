@@ -1,9 +1,15 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
+import { ref } from 'vue';
+import KeyUnlock from './components/KeyUnlock.vue';
+let idInitialized = ref(false);
+function handleUnlock() {
+  idInitialized.value = true;
+}
 </script>
 
 <template>
-  <header>
+  <header v-if="idInitialized">
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
@@ -14,6 +20,7 @@ import { RouterLink, RouterView } from 'vue-router';
       </nav>
     </div>
   </header>
-  <RouterView/>
+  <KeyUnlock v-if="!idInitialized" @unlock="handleUnlock"/>
+  <RouterView v-if="idInitialized"/>
 </template>
 
